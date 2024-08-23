@@ -1,12 +1,19 @@
 <?php
 
-    function conectarDB() : mysqli {
-        $db = new mysqli('localhost', 'root', 'root', 'bienesraices_crud');
+function conectarDB() : mysqli {
+    // Obtener los valores de las variables de entorno
+    $host = getenv('DB_HOST');
+    $user = getenv('DB_USER');
+    $password = getenv('DB_PASSWORD');
+    $database = getenv('DB_NAME');
 
-        if(!$db) {
-            echo "Error, no se puedo conectar";
-            exit;// Si no se puedo conectar, detenemos la ejecución de la pagina para que no se releve información critica
-        } 
+    // Conectar a la base de datos usando los valores de las variables de entorno
+    $db = new mysqli($host, $user, $password, $database);
 
-        return $db;
+    if($db->connect_error) {
+        echo "Error, no se pudo conectar: " . $db->connect_error;
+        exit; // Detener la ejecución si hay un error de conexión
     }
+
+    return $db;
+}
